@@ -1,0 +1,18 @@
+services:
+  clearervoice-studio:
+    container_name: clearervoice-studio
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./temp:/app/temp
+    environment:
+      - TZ=Asia/Shanghai
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+              ids: [0]

@@ -1,0 +1,14 @@
+all:
+  vars:
+    ansible_port: 22
+  children:
+    stage:
+      hosts:
+        clearervoice-stage:
+          ansible_host: ttd-stage
+          ansible_user: root
+    prod:
+      hosts:
+        clearervoice-prod:
+          ansible_host: ttd-edge
+          ansible_user: root

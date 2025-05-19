@@ -1,0 +1,60 @@
+---
+- name: Deploy ClearerVoice Studio
+  hosts: all
+  become: true
+  vars:
+    app_name: "clearervoice-studio"
+    deploy_dir: "/opt/{{ app_name }}"
+    docker_compose_file: "docker-compose.yml"
+    
+  tasks:
+    - name: Create deployment directory
+      file:
+        path: "{{ deploy_dir }}"
+        state: directory
+        mode: '0755'
+      tags: [deploy, stage, prod]
+
+    - name: Copy docker-compose file
+      template:
+        src: "../{{ docker_compose_file }}"
+        dest: "{{ deploy_dir }}/{{ docker_compose_file }}"
+        mode: '0644'
+      tags: [deploy, config, stage, prod]
+
+    - name: Copy application files
+      synchronize:
+        src: "../"
+        dest: "{{ deploy_dir }}"
+        delete: yes
+        rsync_opts:
+          - "--exclude=.git"
+          - "--exclude=__pycache__"
+          - "--exclude=*.pyc"
+          - "--exclude=.mypy_cache"
+          - "--exclude=.pytest_cache"
+      delegate_to: localhost
+      become: false
+      tags: [deploy, app, stage, prod]
+
+    - name: Pull latest images and recreate containers
+      community.docker.docker_compose:
+        project_src: "{{ deploy_dir }}"
+        build: yes
+        pull: yes
+        remove_orphans: yes
+        state: present
+      environment:
+        COMPOSE_DOCKER_CLI_BUILD: "1"
+        DOCKER_BUILDKIT: "1"
+      tags: [deploy, docker, stage, prod]
+
+    - name: Ensure containers are running
+      community.docker.docker_container:
+        name: "{{ app_name }}"
+        state: started
+        restart: yes
+        restart_policy: unless-stopped
+        image: "{{ app_name }}:latest"
+        pull: yes
+      tags: [deploy, docker, stage, prod]
