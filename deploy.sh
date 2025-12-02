@@ -72,7 +72,7 @@ if [ -z "$ENV" ]; then
 fi
 
 # 构建 Ansible 命令
-ANSIBLE_CMD="ansible-playbook -i ansible/inventory.yml"
+ANSIBLE_STDOUT_CALLBACK=debug ANSIBLE_CMD="ansible-playbook -i ansible/inventory.yml"
 
 # 添加额外选项
 if [ -n "$VERBOSE" ]; then
