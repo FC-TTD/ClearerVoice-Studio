@@ -72,7 +72,7 @@ if [ -z "$ENV" ]; then
 fi
 
 # 构建 Ansible 命令
-ANSIBLE_STDOUT_CALLBACK=debug ANSIBLE_CMD="ansible-playbook -i ansible/inventory.yml"
+ANSIBLE_CMD="ansible-playbook -i ansible/inventory.yml"
 
 # 添加额外选项
 if [ -n "$VERBOSE" ]; then
@@ -101,7 +101,7 @@ ANSIBLE_CMD="$ANSIBLE_CMD ansible/site.yml"
 echo -e "${YELLOW}Executing: $ANSIBLE_CMD${NC}"
 
 # 执行命令
-eval $ANSIBLE_CMD
+ANSIBLE_STDOUT_CALLBACK=debug eval $ANSIBLE_CMD
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}Deployment to $ENV completed successfully!${NC}"
