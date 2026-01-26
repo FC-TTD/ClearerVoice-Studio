@@ -2,9 +2,7 @@ FROM pytorch/pytorch:2.2.0-cuda12.1-cudnn8-runtime
 
 # 安装系统依赖
 RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    make \
+    build-essential \
     ffmpeg \
     libavcodec-extra \
     libsndfile1 \
@@ -17,11 +15,16 @@ ENV PYDUB_FFMPEG_PATH=/usr/bin/ffmpeg
 # 创建工作目录
 WORKDIR /app
 
-#mount requirements.txt for best cache result
-RUN --mount=type=bind,source=requirements.txt,target=/tmp/requirements.txt \
-    pip install --no-cache-dir -r /tmp/requirements.txt
+#mock directory for clearvoice
+RUN mkdir /app/clearvoice && touch /app/clearvoice/__init__.py
 
-RUN pip install --no-cache-dir gradio silero-vad modelscope
+COPY clearvoice/README.md /app/README.md
+COPY clearvoice/pyproject.toml /app/pyproject.toml
+
+RUN pip install --no-cache-dir .
+
+RUN pip install --no-cache-dir "gradio<6.0" silero-vad modelscope \
+    && pip install "ttd_fastapi_utils>=0.2.4" --index-url http://pypi-server/simple/ --trusted-host pypi-server
 
 # 复制应用代码
 COPY ./clearvoice .

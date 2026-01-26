@@ -21,20 +21,26 @@ import os
 import tempfile
 import uuid
 import time
+from ttd_fastapi_utils import SmartModel
 
 # SDK模型下载 - modelscope自带缓存管理
 from modelscope import snapshot_download
 snapshot_download('iic/ClearerVoice-Studio', local_dir='checkpoints/')
 
-# 全局模型实例缓存
-model_cache = {}
+# 全局模型管理器缓存
+# 存储 SmartModel 实例
+model_managers = {}
 
 def get_model(task, model_names):
     key = f"{task}_{','.join(model_names)}"
-    if key not in model_cache:
-        print(f"Loading model: {key}")
-        model_cache[key] = ClearVoice(task=task, model_names=model_names)
-    return model_cache[key]
+    if key not in model_managers:
+        print(f"Initializing model manager for: {key}")
+        def loader():
+            print(f"Loading model: {key}")
+            return ClearVoice(task=task, model_names=model_names)
+        # Default 2h timeout
+        model_managers[key] = SmartModel(loader, timeout_seconds=7200)
+    return model_managers[key].get()
 
 def fn_clearvoice_se(input_wav, model):
     try:
@@ -104,7 +110,7 @@ def find_mp4_files(directory):
     return mp4_files
     
 def fn_clearvoice_tse(input_video):
-    myClearVoice = ClearVoice(task='target_speaker_extraction', model_names=['AV_MossFormer2_TSE_16K'])
+    myClearVoice = get_model(task='target_speaker_extraction', model_names=['AV_MossFormer2_TSE_16K'])
     #output_wav_dict = 
     print(f'input_video: {input_video}')
     myClearVoice(input_path=input_video, online_write=True, output_path='path_to_output_videos_tse')
@@ -115,11 +121,11 @@ def fn_clearvoice_tse(input_video):
 
 def fn_clearvoice_sr(input_wav, apply_se):
     wavname = input_wav.split('/')[-1]
-    myClearVoice = ClearVoice(task='speech_super_resolution', model_names=['MossFormer2_SR_48K'])
+    myClearVoice = get_model(task='speech_super_resolution', model_names=['MossFormer2_SR_48K'])
     fs = 48000
     if apply_se:
         new_wavname = wavname.replace('.wav', str(random.randint(0,100))+'.wav')
-        myClearVoice_se = ClearVoice(task='speech_enhancement', model_names=['MossFormer2_SE_48K'])
+        myClearVoice_se = get_model(task='speech_enhancement', model_names=['MossFormer2_SE_48K'])
         output_wav_dict = myClearVoice_se(input_path=input_wav, online_write=True, output_path=new_wavname)
         input_wav = new_wavname
 
