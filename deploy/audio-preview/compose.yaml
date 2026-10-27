@@ -1,0 +1,51 @@
+name: clearvoice-audio-preview
+services:
+  api:
+    image: clearvoice-audio-preview:${AUDIO_RELEASE:?Use a content hash}
+    container_name: clearvoice-audio-preview
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: ["/tmp:rw,nosuid,size=512m"]
+    ports: ["192.168.100.15:17902:8000"]
+    mem_limit: 12g
+    cpus: 4
+    pids_limit: 256
+    environment:
+      AUDIO_GPU_UUID: GPU-5dda4827-a51a-2d06-53e3-1171bb3c8a60
+      CUDA_VISIBLE_DEVICES: "0"
+      NVIDIA_VISIBLE_DEVICES: GPU-5dda4827-a51a-2d06-53e3-1171bb3c8a60
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+      STUDIO_ORIGIN: http://192.168.100.18:17896
+      HF_HUB_OFFLINE: "1"
+      OMP_NUM_THREADS: "4"
+      OPENBLAS_NUM_THREADS: "4"
+      NUMBA_CACHE_DIR: /tmp/numba
+      PYTORCH_KERNEL_CACHE_PATH: /tmp/torch-kernels
+    volumes:
+      - /mnt/TTD-Data/clearvoice-audio-preview:/models:ro
+      - /mnt/TTD-Data/clearvoice-audio-preview/checkpoints:/srv/clearvoice/checkpoints:ro
+      - /mnt/TTD/04_应用/clearvoice-audio-preview:/data
+      - /mnt/TTD/04_应用/pymss-ui-preview/jobs:/studio-inputs:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: [GPU-5dda4827-a51a-2d06-53e3-1171bb3c8a60]
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD","python","-c","import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz')"]
+      interval: 15s
+      timeout: 4s
+      retries: 3
+    labels:
+      org.opencontainers.image.source: https://github.com/FC-TTD/ClearerVoice-Studio
+      ttd.preview.owner: ClearerVoice-Studio
+      ttd.preview.release: ${AUDIO_RELEASE}
+networks:
+  default:
+    ipam:
+      config: [{subnet: 10.41.0.0/24}]

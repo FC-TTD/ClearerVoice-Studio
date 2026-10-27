@@ -1,0 +1,87 @@
+[
+  {
+    "name": "MossFormer2_SS_16K",
+    "revision": "407cb030cd66340918ebb6c8cc63b18f8592cdbe",
+    "artifacts": [
+      {
+        "file": "last_best_checkpoint",
+        "sha256": "315744c841441f8831cb2f896e06102b4d864776bf272febaa30c639c903e1c0",
+        "bytes": 24
+      },
+      {
+        "file": "last_best_checkpoint.pt",
+        "sha256": "00a3a48bda492db1e829b85dd443f8f43a43039a3e90f1a24962ea9caf14a11a",
+        "bytes": 670353271
+      }
+    ]
+  },
+  {
+    "name": "MossFormer2_SR_48K",
+    "revision": "39eb1f25ea84f5e0315ade9ac0070fff216fc690",
+    "artifacts": [
+      {
+        "file": "last_best_checkpoint",
+        "sha256": "aed9187a1e758a1dd74175e1cde27e3c036b9f5c7f775f16b9460d3457506a35",
+        "bytes": 52
+      },
+      {
+        "file": "last_best_checkpoint_g.pt",
+        "sha256": "0bdd13c21466f5963d9d1f86a9d84fc6196868318fe22c6b0a750f041805adda",
+        "bytes": 220712702
+      },
+      {
+        "file": "last_best_checkpoint_m.pt",
+        "sha256": "6cbadb2b6b839e444bb65223c69eea162c8ad08f36e9d0a64144672c4095ab36",
+        "bytes": 218471889
+      }
+    ]
+  },
+  {
+    "name": "MossFormer2_SE_48K",
+    "revision": "eff8c97925c8bec812af707814b3e5d777fd4503",
+    "artifacts": [
+      {
+        "file": "last_best_checkpoint",
+        "sha256": "315744c841441f8831cb2f896e06102b4d864776bf272febaa30c639c903e1c0",
+        "bytes": 24
+      },
+      {
+        "file": "last_best_checkpoint.pt",
+        "sha256": "03692b9f773bbd6bb43b9c5a41f96b1e28affd66e13796b7bec66ad3d8b227c6",
+        "bytes": 221552019
+      }
+    ]
+  },
+  {
+    "name": "FRCRN_SE_16K",
+    "revision": "3766e6a64b0d8cb58f08d913d617bf129f11ed53",
+    "artifacts": [
+      {
+        "file": "last_best_checkpoint",
+        "sha256": "315744c841441f8831cb2f896e06102b4d864776bf272febaa30c639c903e1c0",
+        "bytes": 24
+      },
+      {
+        "file": "last_best_checkpoint.pt",
+        "sha256": "b22256adbb91b68cf5a3db8f6657a4fb17066eecd5f069803e59c186c1cf3ebb",
+        "bytes": 161053751
+      }
+    ]
+  },
+  {
+    "name": "MossFormerGAN_SE_16K",
+    "revision": "dcb1b20e1e44d435090072ab9b223c792ea1f624",
+    "artifacts": [
+      {
+        "file": "last_best_checkpoint",
+        "sha256": "315744c841441f8831cb2f896e06102b4d864776bf272febaa30c639c903e1c0",
+        "bytes": 24
+      },
+      {
+        "file": "last_best_checkpoint.pt",
+        "sha256": "04bf00db575389e1ea8b1fcca48d9efcf073e50ad170e6dd5230df3bac98be27",
+        "bytes": 38845593
+      }
+    ]
+  }
+]

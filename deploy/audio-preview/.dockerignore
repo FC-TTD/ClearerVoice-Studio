@@ -1,0 +1,11 @@
+*
+!clearvoice/
+!clearvoice/clearvoice/
+!clearvoice/clearvoice/**
+!deploy/
+!deploy/audio-preview/
+!deploy/audio-preview/audio_api/
+!deploy/audio-preview/audio_api/**
+!deploy/audio-preview/native-revision
+**/__pycache__
+**/*.pyc
