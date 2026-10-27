@@ -1,0 +1,13 @@
+# syntax=docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+FROM registry.ttd/ttd-hub/sdk-wheel@sha256:f8479f79ca1e5a46383f6da78930ae926b7bc7034e866cc290185121ae4ee728 AS sdk
+FROM registry.ttd/clearervoice-studio/native@sha256:abc7bc961c3a1f064125136e074e0f0454d219bcf6a42389fb7c2626f7a393c2
+COPY --from=sdk --link /opt/ttd-hub-runtime /opt/ttd-hub-runtime
+COPY --link hub_runtime/native_process.py hub_runtime/__init__.py /app/hub_runtime/
+COPY --link hub_runtime/api.py hub_runtime/__main__.py /app/hub_runtime/
+COPY --link deploy/audio-preview/audio_api /app/audio_api
+COPY --link deploy/audio-preview/native-revision /app/native-revision
+COPY --link .source-commit /opt/provider-source-commit
+ENV PYTHONPATH=/opt/ttd-hub-runtime:/app:/app/clearvoice PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 TTD_WEBHOOK_URL=""
+ENTRYPOINT []
+CMD ["python","-m","hub_runtime"]
+LABEL org.opencontainers.image.source="https://github.com/FC-TTD/ClearerVoice-Studio"

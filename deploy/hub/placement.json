@@ -1,0 +1,14 @@
+{
+  "node": "edge",
+  "gpu": "GPU-f49c9ab9-2984-04e2-d321-6f73955e1fad",
+  "components": {
+    "runtime": {
+      "service": "clearvoice-audio",
+      "subnet": "10.243.86.0/24",
+      "address": "10.243.86.2",
+      "business_port": 18586,
+      "control_port": 18686
+    }
+  },
+  "status": "prepared-not-registered"
+}

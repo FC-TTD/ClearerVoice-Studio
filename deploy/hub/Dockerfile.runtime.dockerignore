@@ -1,0 +1,11 @@
+**
+!hub_runtime/
+!hub_runtime/**
+!deploy/audio-preview/audio_api/
+!deploy/audio-preview/audio_api/**
+!deploy/audio-preview/native-revision
+!.source-commit
+!deploy/hub/Dockerfile.runtime
+**/__pycache__
+**/*.pyc
+**/._*

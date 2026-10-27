@@ -1,0 +1,11 @@
+{
+  "project": "clearervoice-studio",
+  "components": {
+    "runtime": "clearvoice"
+  },
+  "sdk": "registry.ttd/ttd-hub/sdk-wheel@sha256:f8479f79ca1e5a46383f6da78930ae926b7bc7034e866cc290185121ae4ee728",
+  "nativeImages": {
+    "runtime": "registry.ttd/clearervoice-studio/native@sha256:abc7bc961c3a1f064125136e074e0f0454d219bcf6a42389fb7c2626f7a393c2"
+  },
+  "cache": "registry.ttd/music-native/shared-cache:buildcache"
+}
